@@ -1,0 +1,110 @@
+<html>
+<head>
+    <title>function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+    <script type="text/javascript">
+        //arguments
+        var testArg = function(a, b) {
+            console.log(arguments.length);
+            console.log(testArg.length);
+        }
+        testArg(1,2,3);
+
+        //caller
+        function test() {
+            if (test.caller == null) {
+                document.write("test is called from the toppest level");
+            } else {
+                document.write("test is called from the function:<br/>");
+                document.writeln(test.caller.toString());
+            }
+            document.write("<br />");
+        }
+        //call from the top level
+        test();
+        //output: test is called from the toppest level
+
+        function testOuter() {
+            test();
+        }
+
+        //call from the function testOuter
+        testOuter();
+        //output:
+        //test is called from the function:
+        //function testOuter() { test(); }
+
+        //callee
+        var fac = function(n){
+          if (n <= 0)
+             return 1;
+          else
+             return n * arguments.callee(n - 1);
+        }(4);
+        document.write(fac);//24
+
+        
+        //prototype
+        var MyObj = function() {
+            this.id = 1;
+        }
+        var o = new MyObj();
+        if(o.constructor == MyObj) {
+            document.write("o is MyObj");
+        }
+
+        var num = new Number(2);
+        console.log(typeof (num.add));
+        Number.prototype.add = function(n) {
+            return this + n;
+        }
+        console.log(num.add(1));
+
+
+        //apply
+        var callMe = function(arg1, arg2) {
+            console.log("this value:" + this);
+            for(i in arguments) {
+                console.log(arguments[i]);    
+            }
+        }
+        callMe(1, 2);
+        
+        callMe.apply(3, [4, 5]);
+
+        callMe.apply();
+
+        try {
+            callMe.apply(3, 2);
+        } catch(e) {
+            console.log(e.message);
+        }
+        var c = new callMe(1,2);
+
+        //bind
+        var old = function(a,b) {
+            console.log(this.n);
+            console.log(a+b);
+        }
+        var arg = {
+            n: 10
+        };    
+        var newO = old.bind(arg, 1, 2);
+        old(9,1);
+        newO(3,4,5);
+
+        //apply
+        var x = {
+            "0": "111",
+            "1": "222",
+            "length": 2
+        };
+        var test = function(arg1, arg2) {
+            console.log(arg1 + arg2);
+        }
+        test.apply(null, x);
+    </script>
+</body>
+</html>
